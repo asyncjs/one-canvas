@@ -28,9 +28,21 @@ app.get('/grid', function (req, res) {
 });
 
 app.get('/get/:src', function (req, res) {
-  var src = req.params.src
-  //SUPER SEKURE
-  res.sendfile(__dirname  + '/' + base + src);
+  var src = req.params.src;
+
+  // THIS IS NOT A GOOD IDEA KIDS!!!
+  fs.readFile(__dirname + '/' + base + src, function (err, buffer) {
+    var string = buffer.toString('utf-8');
+    var requires = [];
+
+    string.replace(/require\((.*?)\)/g, function (_, file) {
+      requires.push(file);
+    });
+
+    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+
+    res.send(string);
+  });
 });
 
 app.get('/canvas/:id/view', function(req, res) {

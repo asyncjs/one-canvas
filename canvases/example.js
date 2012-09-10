@@ -1,5 +1,3 @@
-// var jQuery = require('jQuery');
-
 canvas.ready(function () {
   var canvas = document.createElement('canvas');
   canvas.width = document.width;
