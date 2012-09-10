@@ -6,7 +6,7 @@ var express = require('express')
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
-      .default('port', 80)
+      .default('port', 8000)
       .argv
   ;
 
@@ -24,7 +24,23 @@ app.get('/canvas/:id/view', function(req, res) {
 });
 
 app.get('/canvas/:id/edit', function(req, res) {
-  
+  res.sendfile(__dirname + '/client/edit.html');
+});
+
+app.post('/canvas/:id/save', function(req, res) {
+  var name = req.params.name
+     ,content = req.params.content
+  ;
+
+  if(/[^A-Za-z0-9\-_]/.test(name)) {
+    res.send(500, "invalid filename a-zA-Z0-9-_");
+  } else {
+    fs.writeFile(name + ".js", content, function (err) {
+      if (err) throw err;
+      console.log("Saved ", name);
+      res.send(201, "Saved");
+    });
+  }
 });
 
 app.get('/list', function(req, res) {
