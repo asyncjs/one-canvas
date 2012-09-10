@@ -27,6 +27,12 @@ app.get('/grid', function (req, res) {
   res.sendfile(__dirname + '/client/grid.html');
 });
 
+app.get('/get/:src', function (req, res) {
+  var src = req.params.src
+  //SUPER SEKURE
+  res.sendfile(__dirname  + '/' + base + src);
+});
+
 app.get('/canvas/:id/view', function(req, res) {
   res.sendfile(__dirname + '/client/view.html');
 });

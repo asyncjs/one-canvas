@@ -2,7 +2,9 @@ var ROWS = 3,
     COLS = 3;
 $(document).ready(function () {
   var scripts = [];
-  var width = $(window).width()/COLS, height = $(window).height()/ROWS;
+  var width = parseInt($(window).width()/COLS,10), 
+      height = parseInt($(window).height()/ROWS,10);
+  var sessionId = Math.random();
   
   function reset() {
     window.sandboxes = [];
@@ -11,7 +13,7 @@ $(document).ready(function () {
     for(var r = 0; r < ROWS; r++) {
       for(var c = 0; c < COLS; c++) {
         var sandbox = {iframe: null, row: r, col: c, script: null};
-        window.sandboxes.push(sandboxes);
+        window.sandboxes.push(sandbox);
         updateSandbox(sandbox);
       }
     }
@@ -44,27 +46,31 @@ $(document).ready(function () {
   function injectScript(iframe, src, callback) {
     // Inject code into the sandbox
     var script = document.createElement('script');
-    script.src = src + "?" + Math.random()
-    iframe.contentDocument.body.appendChild(script);
+    script.src = src; 
+    iframe[0].contentDocument.body.appendChild(script);
     script.onload = callback;
   }
 
   function updateSandbox(sandbox) {
     getNextScript(function (script) {
       if (sandbox.iframe) {
-        sandbox.iframe.remove();
+        try {
+          sandbox.iframe.remove();
+        } catch {
+        }
       }
       sandbox.script = script;
-      sandbox.iframe = $('<iframe style="border: 1px solid black; position: fixed">');
-      sandbox.iframe.css({width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
+      sandbox.iframe = $('<iframe>');
+      sandbox.iframe.css(
+        {width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
       $('#grid').append(sandbox.iframe);
-      sandbox.id = "SANDBOX" + (new Date()).getTime();
+      sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
       injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
         injectScript(sandbox.iframe, "/js/broadcast.js", function () {
           injectScript(sandbox.iframe, "/js/sandbox.js", function () {
-            iframe.contentWindow.createCanvas(sandbox.id);
-            injectScript(sandbox.iframe, script.src, function () {
+            sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
+            injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
             });
           });
         });

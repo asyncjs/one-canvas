@@ -12,7 +12,7 @@
  *
  */
 (function () {
-  var Broadcast = Broadcast.noConflict();
+  var Broadcast = window.Broadcast.noConflict();
 
   function Client(id, canvas, socket) {
     this.id = id;
@@ -24,6 +24,7 @@
   }
 
   Client.prototype = {
+    constructor: Client,
     initialize: function () {
       this.canvas.events.emit('ready');
       this.socket.emit('ready');
@@ -60,17 +61,19 @@
       script.addEventListener('load', fn);
       return this;
     }
-  }
+  };
 
-  window.createCanvas: function (id) {
+  window.createCanvas = function (id) {
     if (window.canvas) { return window.canvas; }
 
     var canvas = window.canvas = new Sandbox();
-    var socket = io.connect('http://localhost');
-    var client = new Client(id, sandbox, socket);
+    var socket = io.connect('http://localhost:8000');
+    var client = new Client(id, canvas, socket);
 
-    document.addEventListener('DOMContentLoaded', function () {
+    if (document.readyState === 'complete') {
       client.initialize();
-    });
-  }
+    } else {
+      document.addEventListener('DOMContentLoaded', client.initialize.bind(client));
+    }
+  };
 })();
