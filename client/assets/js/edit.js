@@ -1,6 +1,5 @@
 $(document).ready(function() {
   var myCodeMirror = CodeMirror.fromTextArea($('.editor')[0], {
-    value: "function myScript(){return 100;}\n",
     mode:  "javascript",
     theme: "monokai",
     lineNumbers: true

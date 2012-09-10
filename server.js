@@ -33,6 +33,13 @@ app.get('/get/:src', function (req, res) {
   res.sendfile(__dirname  + '/' + base + src);
 });
 
+app.get('/canvas', function(req, res) {
+  // generate an id
+  var id = Math.floor(Math.random() * 1000) + 1000;
+  //TODO: check if this is a unique ID
+  res.redirect('/canvas/' + id + '/edit');
+});
+
 app.get('/canvas/:id/view', function(req, res) {
   res.sendfile(__dirname + '/client/view.html');
 });
