@@ -31,5 +31,13 @@ body {
   float: left;
   width: 48%;
 }
+
 .editor, .editor-canvas {
+
+}
+
+#grid iframe {
+  border: 1px solid #222;
+  position: fixed;
+  background-color: black;
 }

@@ -2,7 +2,8 @@ var ROWS = 3,
     COLS = 3;
 $(document).ready(function () {
   var scripts = [];
-  var width = $(window).width()/COLS, height = $(window).height()/ROWS;
+  var width = parseInt($(window).width()/COLS,10), 
+      height = parseInt($(window).height()/ROWS,10);
   var sessionId = Math.random();
   
   function reset() {
@@ -56,8 +57,9 @@ $(document).ready(function () {
         sandbox.iframe.remove();
       }
       sandbox.script = script;
-      sandbox.iframe = $('<iframe style="border: 1px solid black; position: fixed">');
-      sandbox.iframe.css({width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
+      sandbox.iframe = $('<iframe>');
+      sandbox.iframe.css(
+        {width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
       $('#grid').append(sandbox.iframe);
       sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
