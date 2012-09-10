@@ -12,7 +12,7 @@
  *
  */
 (function () {
-  var Broadcast = Broadcast.noConflict();
+  var Broadcast = window.Broadcast.noConflict();
 
   function Client(id, canvas, socket) {
     this.id = id;
