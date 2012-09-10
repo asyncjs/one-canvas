@@ -41,11 +41,12 @@ $(document).ready(function () {
     });
   }
 
-  function injectScript(iframe, src) {
+  function injectScript(iframe, src, callback) {
     // Inject code into the sandbox
     var script = document.createElement('script');
     script.src = src + "?" + Math.random()
     iframe.contentDocument.body.appendChild(script);
+    script.onload = callback;
   }
 
   function updateSandbox(sandbox) {
@@ -57,8 +58,17 @@ $(document).ready(function () {
       sandbox.iframe = $('<iframe style="border: 1px solid black; position: fixed">');
       sandbox.iframe.css({width: width, height: height, top: sanbox.row*height, left: sanbox.col*width});
       $('#grid').append(sandbox.iframe);
+      sandbox.id = "SANDBOX" + (new Date()).getTime();
       sanbox.lastUpdated = (new Date()).getTime();
-
+      injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
+        injectScript(sandbox.iframe, "/js/broadcast.js", function () {
+          injectScript(sandbox.iframe, "/js/sandbox.js", function () {
+            iframe.contentWindow.createCanvas(sandbox.id);
+            injectScript(sandbox.iframe, script.src, function () {
+            });
+          });
+        });
+      });
     });
   }
 
