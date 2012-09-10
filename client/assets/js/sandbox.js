@@ -67,8 +67,8 @@
     if (window.canvas) { return window.canvas; }
 
     var canvas = window.canvas = new Sandbox();
-    var socket = io.connect('http://localhost');
-    var client = new Client(id, sandbox, socket);
+    var socket = io.connect('http://localhost:8000');
+    var client = new Client(id, canvas, socket);
 
     if (document.readyState === 'complete') {
       client.initialize();
