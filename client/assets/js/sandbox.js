@@ -60,17 +60,19 @@
       script.addEventListener('load', fn);
       return this;
     }
-  }
+  };
 
-  window.createCanvas: function (id) {
+  window.createCanvas = function (id) {
     if (window.canvas) { return window.canvas; }
 
     var canvas = window.canvas = new Sandbox();
     var socket = io.connect('http://localhost');
     var client = new Client(id, sandbox, socket);
 
-    document.addEventListener('DOMContentLoaded', function () {
+    if (document.readyState === 'complete') {
       client.initialize();
-    });
-  }
+    } else {
+      document.addEventListener('DOMContentLoaded', client.initialize.bind(client));
+    }
+  };
 })();
