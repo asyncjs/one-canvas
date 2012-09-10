@@ -4,6 +4,7 @@ $(document).ready(function () {
   var scripts = [];
   var width = parseInt($(window).width()/COLS,10), 
       height = parseInt($(window).height()/ROWS,10);
+  var sessionId = Math.random();
   
   function reset() {
     window.sandboxes = [];
@@ -12,7 +13,7 @@ $(document).ready(function () {
     for(var r = 0; r < ROWS; r++) {
       for(var c = 0; c < COLS; c++) {
         var sandbox = {iframe: null, row: r, col: c, script: null};
-        window.sandboxes.push(sandboxes);
+        window.sandboxes.push(sandbox);
         updateSandbox(sandbox);
       }
     }
@@ -45,8 +46,8 @@ $(document).ready(function () {
   function injectScript(iframe, src, callback) {
     // Inject code into the sandbox
     var script = document.createElement('script');
-    script.src = src + "?" + Math.random()
-    iframe.contentDocument.body.appendChild(script);
+    script.src = src + "?" + sessionId;
+    iframe[0].contentDocument.body.appendChild(script);
     script.onload = callback;
   }
 
@@ -60,12 +61,12 @@ $(document).ready(function () {
       sandbox.iframe.css(
         {width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
       $('#grid').append(sandbox.iframe);
-      sandbox.id = "SANDBOX" + (new Date()).getTime();
+      sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
       injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
         injectScript(sandbox.iframe, "/js/broadcast.js", function () {
           injectScript(sandbox.iframe, "/js/sandbox.js", function () {
-            iframe.contentWindow.createCanvas(sandbox.id);
+            sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
             injectScript(sandbox.iframe, script.src, function () {
             });
           });
