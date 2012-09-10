@@ -4,7 +4,7 @@ var express = require('express')
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
-      .default('port', 80)
+      .default('port', 8000)
       .argv
   ;
 
@@ -17,12 +17,12 @@ app.get('/client/:id', function (req, res) {
   res.sendfile(__dirname + '/client/index.html');
 });
 
-app.get('canvas/:id/view', function(req, res) {
+app.get('/canvas/:id/view', function(req, res) {
   
 });
 
-app.get('canvas/:id/edit', function(req, res) {
-  
+app.get('/canvas/:id/edit', function(req, res) {
+  res.sendfile(__dirname + '/client/edit.html');
 });
 
 io.sockets.on('connection', function (socket) {

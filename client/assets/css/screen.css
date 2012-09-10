@@ -1,7 +1,7 @@
 html, body, div { margin: 0; border: 0 none; padding: 0; }
 html, body { height: 100%; min-height: 100%; }
 body {
-  background-color: #000;
+  background-color: #EEE;
 }
 
 .canvas {
@@ -13,11 +13,23 @@ body {
   border-radius: 50%;
   width: 50px;
   height: 50px; 
-  background-color: #fff;
+  background-color: #777;
   position: absolute;
   z-index: 9999;
 }
 
 .hidden { 
   display: none; 
+}
+
+.container {
+  clear: both;
+}
+
+.halves {
+  border: 1px dotted blue;
+  float: left;
+  width: 48%;
+}
+.editor, .editor-canvas {
 }
