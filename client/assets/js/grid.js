@@ -94,6 +94,6 @@ $(document).ready(function () {
     var sandboxes = _.sortBy(window.sandboxes, function (sb) {return -sb.lastUpdated;})
     updateSandbox(sandboxes);
   }
-  setInterval(updateSandbox, 30000);
+  setInterval(updateNextSandbox, 30000);
   
 });
