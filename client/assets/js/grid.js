@@ -46,7 +46,7 @@ $(document).ready(function () {
   function injectScript(iframe, src, callback) {
     // Inject code into the sandbox
     var script = document.createElement('script');
-    script.src = src + "?" + sessionId;
+    script.src = src; 
     iframe[0].contentDocument.body.appendChild(script);
     script.onload = callback;
   }
@@ -54,7 +54,10 @@ $(document).ready(function () {
   function updateSandbox(sandbox) {
     getNextScript(function (script) {
       if (sandbox.iframe) {
-        sandbox.iframe.remove();
+        try {
+          sandbox.iframe.remove();
+        } catch {
+        }
       }
       sandbox.script = script;
       sandbox.iframe = $('<iframe>');
@@ -67,7 +70,7 @@ $(document).ready(function () {
         injectScript(sandbox.iframe, "/js/broadcast.js", function () {
           injectScript(sandbox.iframe, "/js/sandbox.js", function () {
             sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
-            injectScript(sandbox.iframe, script.src, function () {
+            injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
             });
           });
         });
