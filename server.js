@@ -10,10 +10,13 @@ var express = require('express')
 
 server.listen(argv.port);
 
+app.use(express.static('client/assets'));
+
 app.get('/canvas/:id', function (req, res) {
+  //load the named file from dropbox
   res.sendfile(__dirname + '/client/index.html');
 });
-app.use(express.static('client/assets'));
+
 io.sockets.on('connection', function (socket) {
   socket.on('paint', function (data) {
     console.log(data);
