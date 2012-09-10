@@ -56,7 +56,7 @@ $(document).ready(function () {
       if (sandbox.iframe) {
         try {
           sandbox.iframe.remove();
-        } catch {
+        } catch (e) {
         }
       }
       sandbox.script = script;

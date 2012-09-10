@@ -39,12 +39,19 @@
 
   function Sandbox() {
     this.events = new Broadcast();
+    this.events.on('ready', function () {
+      this.ready.fired = true;
+    }, this);
   }
 
   Sandbox.prototype = {
     constructor: Sandbox,
     ready: function (fn, context) {
-      this.events.on('ready', fn, context);
+      if (this.ready.fired === true) {
+        setTimeout(fn.bind(context), 0);
+      } else {
+        this.events.on('ready', fn, context);
+      }
       return this;
     },
     message: function (fn, context) {
