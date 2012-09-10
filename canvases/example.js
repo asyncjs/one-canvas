@@ -1,4 +1,4 @@
-//canvas.ready(function () {
+canvas.ready(function () {
   var canvas = document.createElement('canvas');
   canvas.width = document.width;
   canvas.height = document.height;
@@ -10,4 +10,4 @@
   ctx.fill();
 
   document.body.appendChild(canvas);
-//});
+});
