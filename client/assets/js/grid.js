@@ -66,11 +66,13 @@ $(document).ready(function () {
       $('#grid').append(sandbox.iframe);
       sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
+
+      sandbox.iframe[0].contentWindow.Broadcast = window.Broadcast;
       injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
-        injectScript(sandbox.iframe, "/js/broadcast.js", function () {
+        injectScript(sandbox.iframe, "/js/vendor/require.js", function () {
           injectScript(sandbox.iframe, "/js/sandbox.js", function () {
             sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
-            injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
+              injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
             });
           });
         });
