@@ -24,6 +24,7 @@
   }
 
   Client.prototype = {
+    constructor: Client,
     initialize: function () {
       this.canvas.events.emit('ready');
       this.socket.emit('ready');
