@@ -41,3 +41,8 @@ body {
   position: fixed;
   background-color: black;
 }
+
+.canvas-iframe {
+  width: 98%;
+  height: 400px;
+}
