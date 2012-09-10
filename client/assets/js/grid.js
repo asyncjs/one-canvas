@@ -73,6 +73,7 @@ $(document).ready(function () {
       $('#grid').append(sandbox.iframe);
       sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
+      sandbox.iframe[0].contentWindow.Broadcast = window.Broadcast;
       injectCSS(sandbox.iframe, "/css/screen.css", function () {
         injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
           injectScript(sandbox.iframe, "/js/broadcast.js", function () {
