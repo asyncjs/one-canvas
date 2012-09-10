@@ -27,6 +27,22 @@ app.get('/canvas/:id/edit', function(req, res) {
   
 });
 
+app.post('/canvas/:id/save', function(req, res) {
+  var name = req.params.name
+     ,content = req.params.content
+  ;
+
+  if(/[^A-Za-z0-9\-_]/.test(name)) {
+    res.send(500, "invalid filename a-zA-Z0-9-_");
+  } else {
+    fs.writeFile(name + ".js", 'Hello Node', function (err) {
+      if (err) throw err;
+      console.log("Saved ", name);
+      res.send(201, "Saved");
+    });
+  }
+});
+
 app.get('/list', function(req, res) {
   var base = "src/";
   var resp = [];
