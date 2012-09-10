@@ -76,7 +76,7 @@ $(document).ready(function () {
       sandbox.iframe[0].contentWindow.Broadcast = window.Broadcast;
       injectCSS(sandbox.iframe, "/css/screen.css", function () {
         injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
-          injectScript(sandbox.iframe, "/js/broadcast.js", function () {
+          injectScript(sandbox.iframe, "/js/vendor/broadcast.js", function () {
             injectScript(sandbox.iframe, "/js/sandbox.js", function () {
               sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
               injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
