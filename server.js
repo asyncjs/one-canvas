@@ -22,6 +22,11 @@ app.get('/client/:id', function (req, res) {
   res.sendfile(__dirname + '/client/index.html');
 });
 
+
+app.get('/grid', function (req, res) {
+  res.sendfile(__dirname + '/client/grid.html');
+});
+
 app.get('/canvas/:id/view', function(req, res) {
   
 });
