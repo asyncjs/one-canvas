@@ -17,7 +17,11 @@ app.get('/client/:id', function (req, res) {
   res.sendfile(__dirname + '/client/index.html');
 });
 
-app.get('canvas/:id', function(req, res) {
+app.get('canvas/:id/view', function(req, res) {
+  
+});
+
+app.get('canvas/:id/edit', function(req, res) {
   
 });
 
