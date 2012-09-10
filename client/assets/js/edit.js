@@ -6,21 +6,37 @@ $(document).ready(function() {
     lineNumbers: true
   });
 
-  //TODO: fix this.
+  //TODO: fix this - this will break anytime soon!
   var id = window.location.pathname.split('/')[2];
-  console.log(id);
+  var viewUrl = "/canvas/" + id + "/view";
 
+  // Load the current view in the right half.
+  $("<iframe src='" + viewUrl + "' class='canvas-iframe' />").load(function() {
+    // add something here if needed
+  }).appendTo('.editor-canvas');
+
+  // Save the codes on the server.
   $('.save-code').click(function(event) {
 
     myCodeMirror.save();
-    var content = $('.editor').val();
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: content},
+      data: {content: $('.editor').val()},
       success: function(response) {
-        console.log('back!');
+        $('.try-code').click();
+        reloadLiveView();
       }
     });
   });
+
+  // Refresh the right half.
+  $('.try-code').click(function(event) {
+    reloadLiveView();
+  });
 });
+
+
+function reloadLiveView() {
+  $('.canvas-iframe')[0].contentWindow.location.reload(true);
+}

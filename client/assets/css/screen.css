@@ -33,3 +33,8 @@ body {
 }
 .editor, .editor-canvas {
 }
+
+.canvas-iframe {
+  width: 98%;
+  height: 400px;
+}

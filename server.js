@@ -28,7 +28,7 @@ app.get('/grid', function (req, res) {
 });
 
 app.get('/canvas/:id/view', function(req, res) {
-  
+  res.sendfile(__dirname + '/client/view.html');
 });
 
 app.get('/canvas/:id/edit', function(req, res) {
