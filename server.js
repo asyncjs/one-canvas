@@ -12,9 +12,13 @@ server.listen(argv.port);
 
 app.use(express.static('client/assets'));
 
-app.get('/canvas/:id', function (req, res) {
+app.get('/client/:id', function (req, res) {
   //load the named file from dropbox
   res.sendfile(__dirname + '/client/index.html');
+});
+
+app.get('canvas/:id', function(req, res) {
+  
 });
 
 io.sockets.on('connection', function (socket) {
