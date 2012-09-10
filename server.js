@@ -35,7 +35,7 @@ app.post('/canvas/:id/save', function(req, res) {
   if(/[^A-Za-z0-9\-_]/.test(name)) {
     res.send(500, "invalid filename a-zA-Z0-9-_");
   } else {
-    fs.writeFile(name + ".js", 'Hello Node', function (err) {
+    fs.writeFile(name + ".js", content, function (err) {
       if (err) throw err;
       console.log("Saved ", name);
       res.send(201, "Saved");
