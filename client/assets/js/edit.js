@@ -6,13 +6,16 @@ $(document).ready(function() {
     lineNumbers: true
   });
 
+  //TODO: fix this.
+  var id = window.location.pathname.split('/')[2];
+  console.log(id);
 
   $('.save-code').click(function(event) {
 
     myCodeMirror.save();
     var content = $('.editor').val();
     $.ajax({
-      url: '/canvas' + id + '/save',
+      url: '/canvas/' + id + '/save',
       type: 'POST',
       data: {content: content},
       success: function(response) {

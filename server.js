@@ -7,12 +7,15 @@ var express = require('express')
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
       .default('port', 8000)
+      .default('canvasroot', "canvases/")
       .argv
+  , base = argv.canvasroot
   ;
 
 server.listen(argv.port);
 
 app.use(express.static('client/assets'));
+app.use(express.bodyParser());
 
 app.get('/client/:id', function (req, res) {
   //load the named file from dropbox
@@ -33,14 +36,14 @@ app.get('/canvas/:id/edit', function(req, res) {
 });
 
 app.post('/canvas/:id/save', function(req, res) {
-  var name = req.params.name
-     ,content = req.params.content
+  var name = req.params.id
+     ,content = req.body.content
   ;
 
   if(/[^A-Za-z0-9\-_]/.test(name)) {
     res.send(500, "invalid filename a-zA-Z0-9-_");
   } else {
-    fs.writeFile(name + ".js", content, function (err) {
+    fs.writeFile(base + name + ".js", content, function (err) {
       if (err) throw err;
       console.log("Saved ", name);
       res.send(201, "Saved");
@@ -49,7 +52,6 @@ app.post('/canvas/:id/save', function(req, res) {
 });
 
 app.get('/list', function(req, res) {
-  var base = "src/";
   var resp = [];
   fs.readdir(base, function(err, files) {
     files.forEach(function(file) {
