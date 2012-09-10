@@ -1,7 +1,7 @@
 html, body, div { margin: 0; border: 0 none; padding: 0; }
 html, body { height: 100%; min-height: 100%; }
 body {
-  background-color: #EEE;
+  background-color: #000;
 }
 
 .canvas {
@@ -39,10 +39,12 @@ body {
 #grid iframe {
   border: 1px solid #222;
   position: fixed;
-  background-color: black;
 }
 
 .canvas-iframe {
   width: 98%;
   height: 400px;
 }
+
+canvas { background-color: #000; overflow: hidden; } 
+
