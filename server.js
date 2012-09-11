@@ -35,8 +35,7 @@ app.get('/get/:src', function (req, res) {
 
 app.get('/canvas', function(req, res) {
   // generate an id
-  var id = Math.floor(Math.random() * 1000) + 1000;
-  //TODO: check if this is a unique ID
+  var id = getUniqueCanvasId();
   res.redirect('/canvas/' + id + '/edit');
 });
 
@@ -79,6 +78,23 @@ app.get('/list', function(req, res) {
     res.send(200, resp);
   });
 });
+
+
+// GLOBAL!!
+var getUniqueCanvasId = function() {
+  var id = Math.floor(Math.random() * 1000) + 1000;
+  var file;
+
+  try {
+    file = fs.openSync(base + id + '.js', 'r');
+    return getUniqueCanvasId();
+  }
+  catch(ex) {
+    // file not found - the ID's unique.
+    return id;
+  }
+}
+
 
 io.sockets.on('connection', function (socket) {
   socket.on('paint', function (data) {
