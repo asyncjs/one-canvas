@@ -70,6 +70,10 @@
     }
   };
 
+  require.config({
+    baseUrl: "/js/vendor"
+  });
+
   window.createCanvas = function (id) {
     if (window.canvas) { return window.canvas; }
 
