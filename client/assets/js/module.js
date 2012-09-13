@@ -102,7 +102,7 @@
 
   window.createModule = function (id) {
     if (window.module) { return window.module; }
-    var socket = io.connect("http://localhost:8000");
+    var socket = io.connect();
     var module = window.module = new Sandbox();
     var client = new Client(id, module, socket);
 
