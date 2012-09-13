@@ -43,7 +43,7 @@ app.get('/get/:src', function (req, res, next) {
       requires.push(file);
     });
 
-    if( clean ) {
+    if( !clean ) {
       string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
     }
 
