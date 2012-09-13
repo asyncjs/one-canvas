@@ -47,7 +47,7 @@ app.get('/get/:src', function (req, res, next) {
 
     // The editor does not need the require crap in.
     if( !clean ) {
-      string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+      string = 'require([' + requires.join(', ') + '], function () {\n' + string + '\n});';
     }
 
     res.send(string);
