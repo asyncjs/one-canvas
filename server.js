@@ -43,12 +43,19 @@ app.get('/get/:src', function (req, res, next) {
       requires.push(file);
     });
 
+    // The editor does not need the require crap in.
     if( !clean ) {
       string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
     }
 
     res.send(string);
   });
+});
+
+app.get('/', function(req, res) {
+  // redirect the user to a random page.
+  var id = getUniqueCanvasId();
+  res.redirect('/canvas/' + id + '/edit');
 });
 
 app.get('/canvas', function(req, res) {
