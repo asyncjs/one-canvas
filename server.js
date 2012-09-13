@@ -76,7 +76,7 @@ app.post('/canvas/:id/save', function(req, res) {
       res.send(201, "Saved");
       if(req.body.publish) {
         fs.writeFile(fname, content, function (err) {});
-        console.log("Published", name);
+        console.log("Published", fname);
       }
     });
   }
