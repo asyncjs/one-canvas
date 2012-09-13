@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
   var myCodeMirror = CodeMirror.fromTextArea($('.editor')[0], {
     mode:  "javascript",
     theme: "monokai",
@@ -9,20 +10,19 @@ $(document).ready(function() {
     }
   });
 
-  //TODO: fix this - this will break anytime soon!
   var id = window.location.pathname.split('/')[2];
   var viewUrl = "/canvas/" + id + "/view";
 
   // Load the current view in the right half.
   $("<iframe src='" + viewUrl + "' class='canvas-iframe' />").load(function() {
-    // add something here if needed
+    myCodeMirror.save();
+    reloadLiveView($('.editor').val());
   }).appendTo('.editor-canvas');
 
   // Save the codes on the server.
   $('.save-code').click(function(event) {
 
     myCodeMirror.save();
-
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
@@ -36,8 +36,12 @@ $(document).ready(function() {
 
 
 function reloadLiveView(script) {
-  $script = $('.editor-canvas iframe').contents().find('#canvasScript');
+  try {
+    $script = $('.editor-canvas iframe').contents().find('#canvasScript');
 
-  $('.editor-canvas iframe').contents().find('body').html('');
-  $('.editor-canvas iframe')[0].contentWindow.eval(script);
+    $('.editor-canvas iframe').contents().find('body').html('');
+    $('.editor-canvas iframe')[0].contentWindow.eval(script);
+  }
+  catch (ex) {
+  }
 }

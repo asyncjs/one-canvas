@@ -26,15 +26,36 @@ body {
   clear: both;
 }
 
+body {
+  position: relative;
+}
+
 .halves {
-  border: 1px dotted blue;
   float: left;
-  width: 48%;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
-.editor, .editor-canvas {
+.halves.first {
+  left: 0;
+}
+
+.halves.second {
+  right: 0;
+}
+
+.editor {
+  display: block;
+  height: 100%;
+}
+
+.editor-canvas {
 
 }
+
+
 
 #grid iframe {
   border: 1px solid #222;
@@ -48,3 +69,18 @@ body {
 
 canvas { background-color: #000; overflow: hidden; } 
 
+.CodeMirror,
+.CodeMirror-scroll {
+  height: 100% !important;
+}
+
+.editor-tools {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+iframe {
+  border: 0;
+  border-bottom: 1px solid #222;
+}
