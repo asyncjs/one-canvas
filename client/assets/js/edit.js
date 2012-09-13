@@ -2,7 +2,11 @@ $(document).ready(function() {
   var myCodeMirror = CodeMirror.fromTextArea($('.editor')[0], {
     mode:  "javascript",
     theme: "monokai",
-    lineNumbers: true
+    lineNumbers: true,
+    onKeyEvent : function (editor, e) {
+      myCodeMirror.save();
+      reloadLiveView($('.editor').val());
+    }
   });
 
   //TODO: fix this - this will break anytime soon!
@@ -18,24 +22,22 @@ $(document).ready(function() {
   $('.save-code').click(function(event) {
 
     myCodeMirror.save();
+
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: $('.editor').val()},
+      data: {content: $('.editor').val(), publish: true},
       success: function(response) {
-        $('.try-code').click();
-        reloadLiveView();
+        //$('.try-code').click();
       }
     });
-  });
-
-  // Refresh the right half.
-  $('.try-code').click(function(event) {
-    reloadLiveView();
   });
 });
 
 
-function reloadLiveView() {
-  $('.canvas-iframe')[0].contentWindow.location.reload(true);
+function reloadLiveView(script) {
+  $script = $('.editor-canvas iframe').contents().find('#canvasScript');
+
+  $('.editor-canvas iframe').contents().find('body').html('');
+  $('.editor-canvas iframe')[0].contentWindow.eval(script);
 }
