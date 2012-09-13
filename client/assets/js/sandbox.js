@@ -29,7 +29,7 @@ function injectCSS(iframe, src, callback) {
 // returns the jQuery object representing it.
 window.setupSandboxIFrame = function (iframe, id, src) {
     iframe[0].contentWindow.Broadcast = window.Broadcast;
-    injectCSS(iframe, "/css/screen.css", function () {
+    injectCSS(iframe, "/css/module.css", function () {
       injectScripts(iframe, [ "/socket.io/socket.io.js",
                               "/js/vendor/broadcast.js",
                               "/js/vendor/require.js",
