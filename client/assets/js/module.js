@@ -102,7 +102,7 @@
 
   window.createModule = function (id) {
     if (window.module) { return window.module; }
-    var socket = io.connect();
+    var socket = io.connect("http://canvas.browsing.co.uk");
     var module = window.module = new Sandbox();
     var client = new Client(id, module, socket);
 
