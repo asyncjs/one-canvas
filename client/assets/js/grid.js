@@ -51,13 +51,20 @@ $(document).ready(function () {
     script.onload = callback;
   }
 
+  function injectCSS(iframe, src, callback) {
+    // Inject code into the sandbox
+    var link = document.createElement('link');
+    link.href = src;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    iframe[0].contentDocument.body.appendChild(link);
+    callback();
+  }
+
   function updateSandbox(sandbox) {
     getNextScript(function (script) {
       if (sandbox.iframe) {
-        try {
-          sandbox.iframe.remove();
-        } catch (e) {
-        }
+        try { sandbox.iframe.remove(); } catch (e) { }
       }
       sandbox.script = script;
       sandbox.iframe = $('<iframe>');
@@ -69,11 +76,16 @@ $(document).ready(function () {
       $('#grid').append(sandbox.iframe);
       sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
-      injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
-        injectScript(sandbox.iframe, "/js/broadcast.js", function () {
-          injectScript(sandbox.iframe, "/js/sandbox.js", function () {
-            sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
-            injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
+      sandbox.iframe[0].contentWindow.Broadcast = window.Broadcast;
+      injectCSS(sandbox.iframe, "/css/screen.css", function () {
+        injectScript(sandbox.iframe, "/socket.io/socket.io.js", function () {
+          injectScript(sandbox.iframe, "/js/vendor/broadcast.js", function () {
+            injectScript(sandbox.iframe, "/js/vendor/require.js", function () {
+              injectScript(sandbox.iframe, "/js/sandbox.js", function () {
+                sandbox.iframe[0].contentWindow.createCanvas(sandbox.id);
+                injectScript(sandbox.iframe, script.src + "?" + Math.random(), function () {
+                });
+              });
             });
           });
         });
@@ -85,6 +97,6 @@ $(document).ready(function () {
     var sandboxes = _.sortBy(window.sandboxes, function (sb) {return -sb.lastUpdated;})
     updateSandbox(sandboxes);
   }
-  setInterval(updateSandbox, 30000);
+  setInterval(updateNextSandbox, 30000);
   
 });

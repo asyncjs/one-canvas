@@ -28,9 +28,27 @@ app.get('/grid', function (req, res) {
 });
 
 app.get('/get/:src', function (req, res) {
-  var src = req.params.src
-  //SUPER SEKURE
-  res.sendfile(__dirname  + '/' + base + src);
+  var src = req.params.src;
+
+  // THIS IS NOT A GOOD IDEA KIDS!!!
+  fs.readFile(__dirname + '/' + base + src, function (err, buffer) {
+    var string = buffer.toString('utf-8');
+    var requires = [];
+
+    string.replace(/require\((.*?)\)/g, function (_, file) {
+      requires.push(file);
+    });
+
+    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+
+    res.send(string);
+  });
+});
+
+app.get('/canvas', function(req, res) {
+  // generate an id
+  var id = getUniqueCanvasId();
+  res.redirect('/canvas/' + id + '/edit');
 });
 
 app.get('/canvas/:id/view', function(req, res) {
@@ -72,6 +90,23 @@ app.get('/list', function(req, res) {
     res.send(200, resp);
   });
 });
+
+
+// GLOBAL!!
+var getUniqueCanvasId = function() {
+  var id = Math.floor(Math.random() * 1000) + 1000;
+  var file;
+
+  try {
+    file = fs.openSync(base + id + '.js', 'r');
+    return getUniqueCanvasId();
+  }
+  catch(ex) {
+    // file not found - the ID's unique.
+    return id;
+  }
+}
+
 
 io.sockets.on('connection', function (socket) {
   socket.on('paint', function (data) {

@@ -12,6 +12,8 @@
     src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
   <script type="application/javascript" src="/socket.io/socket.io.js"></script>
   <script type="application/javascript" src="/js/vendor/codemirror.js"></script>
+  <script type="application/javascript"
+src="/js/vendor/mode/javascript/javascript.js"></script>
   <script type="application/javascript" src="/js/edit.js"></script>
 
   <link href="/css/screen.css?v1" rel="stylesheet" type="text/css">
@@ -23,7 +25,20 @@
 
   <div class="container">
     <div class="halves">
-      <textarea class="editor" data-page="edit"></textarea>
+      <textarea class="editor" data-page="edit">
+canvas.ready(function () {
+  var canvas = document.createElement('canvas');
+  canvas.width = document.width;
+  canvas.height = document.height;
+
+  var ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.fillStyle = 'red'
+  ctx.arc(canvas.width, canvas.height, canvas.height / 2, 0, Math.PI, true);
+  ctx.fill();
+
+  document.body.appendChild(canvas);
+});</textarea>
       <div class="editor-tools">
         <button class="try-code">Try Code</button>
         <button class="save-code">Save Code</button>
