@@ -36,6 +36,8 @@
       var canvas = document.createElement('canvas');
       canvas.width = document.width;
       canvas.height = document.height;
+      
+      document.body.appendChild(canvas);
       // So that the scripts can just access the canvas
       window.canvas = canvas;
     },

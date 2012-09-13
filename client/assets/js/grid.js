@@ -67,7 +67,6 @@ $(document).ready(function () {
   }
 
   function updateNextSandbox() {
-    console.log('UPDATING TO NEXT');
     var sandboxes = _.sortBy(window.sandboxes, function (sb) {return -sb.lastUpdated;})
     updateSandbox(sandboxes);
   }
