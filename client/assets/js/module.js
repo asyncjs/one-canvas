@@ -20,7 +20,6 @@
     this.socket = socket;
 
     this.module.events.on('all', this.onModuleEvent, this);
-    console.log("listening on socket id ", id);
     this.socket.on(id, this.onSocketEvent.bind(this));
   }
 
@@ -45,8 +44,22 @@
     onModuleEvent: function (topic, data) {
       this.socket.emit(this.id, {type: topic, data: data || {}});
     },
-    onSocketEvent: function (data) {
-      this.module.event.trigger('message', {type: data.topic, data: data.data || {}});
+    cursors: [],
+    onSocketEvent: function (payload) {
+      var _this = this;
+      if(payload.topic == 'cursor') {
+        var count = 0;
+        payload.data.t.forEach(function(curpos) {
+          var cursor = _this.cursors[count];
+          if(!cursor) {
+            cursor = _this.cursors[count] = $('<div class="hidden cursor"/>')
+            $('body').append(cursor);
+          }
+          cursor.show().css({left: curpos.x - 25, top: curpos.y - 25});
+        });
+      }
+      this.module.events.emit('message', 
+        {type: payload.topic, data: payload.data || {}});
     }
   };
 
@@ -89,9 +102,8 @@
 
   window.createModule = function (id) {
     if (window.module) { return window.module; }
-
+    var socket = io.connect();
     var module = window.module = new Sandbox();
-    var socket = io.connect('http://localhost:8000');
     var client = new Client(id, module, socket);
 
     if (document.readyState === 'complete') {
