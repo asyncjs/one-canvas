@@ -49,17 +49,28 @@ $(document).ready(function() {
 
 function reloadLiveView(script) {
   try {
+    // Get the script processed to use.
+    var string = script.toString('utf-8');
+    var requires = [];
+
+    string.replace(/require\((.*?)\)/g, function (_, file) {
+      requires.push(file);
+    });
+    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+
+    // Clear the iFrame and inject it with the 'string' which is the script.
     $script = $('.editor-canvas iframe').contents().find('#canvasScript');
 
     $('.editor-canvas iframe').contents().find('body').html('');
-    $('.editor-canvas iframe')[0].contentWindow.eval(script);
 
-    // Also, save this.
+    $('.editor-canvas iframe')[0].contentWindow.eval(string);
+
+    // Also, save this script to the server
     var id = window.location.pathname.split('/')[2];
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: $('.editor').val()}
+      data: {content: $('.editor').val()} //unmodified script
     });
   }
   catch (ex) {
