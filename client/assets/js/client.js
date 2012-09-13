@@ -6,6 +6,9 @@ $(function () {
     y: $('.canvas').outerHeight()
   };
 
+  var parts = window.location.pathname.split("/");
+  var src = parts[parts.length-1];
+
   var cursors = [$('.cursor')];
   //pregenerate cursors
   for (var i = 0; i < 6; i += 1) {
@@ -35,7 +38,7 @@ $(function () {
         cursor.show().css({left: curpos.x - 25, top: curpos.y - 25});
       });
       
-      socket.emit('paint', { t: pos, s: info });
+      socket.emit('paint', src, { t: pos, s: info });
     }
   });
 });
