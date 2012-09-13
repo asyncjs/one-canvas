@@ -1,90 +1,44 @@
-/* Create a new canvas object. The parent window should call createCanvas()
- * with an id. This will set up a socket.io connection listening in on the
- * id. This will create a global canvas object that can be used in the user
- * scripts.
- *
- * Example:
- *
- *   window.createCanvas('mycanvasid');
- *   window.canvas.ready(function () {
- *     console.log('It has loaded');
- *   });
- *
- */
 (function () {
-  var Broadcast = window.Broadcast.noConflict();
-
-  function Client(id, canvas, socket) {
-    this.id = id;
-    this.canvas = canvas;
-    this.socket = socket;
-
-    this.canvas.events.on('all', this.onCanvasEvent, this);
-    this.socket.on(id, this.onSocketEvent.bind(this));
-  }
-
-  Client.prototype = {
-    constructor: Client,
-    initialize: function () {
-      this.canvas.events.emit('ready');
-      this.socket.emit('ready');
-    },
-    onCanvasEvent: function (topic, data) {
-      this.socket.emit(this.id, {type: topic, data: data || {}});
-    },
-    onSocketEvent: function (data) {
-      this.canvas.event.trigger('message', {type: data.topic, data: data.data || {}});
-    }
-  };
-
-  function Sandbox() {
-    this.events = new Broadcast();
-    this.events.on('ready', function () {
-      this.ready.fired = true;
-    }, this);
-  }
-
-  Sandbox.prototype = {
-    constructor: Sandbox,
-    ready: function (fn, context) {
-      if (this.ready.fired === true) {
-        setTimeout(fn.bind(context), 0);
-      } else {
-        this.events.on('ready', fn, context);
+function injectScripts(iframe, src_list, callback) {
+  // Inject code into the sandbox
+  var script = document.createElement('script');
+  script.src = src_list.shift(); 
+  iframe[0].contentDocument.body.appendChild(script);
+  script.onload = function () {
+    if (src_list.length == 0) {
+      if (callback) {
+        callback();
       }
-      return this;
-    },
-    message: function (fn, context) {
-      this.events.on('message', fn, context);
-      return this;
-    },
-    send: function () {
-      this.events.emit.call(this.events, arguments);
-      return this;
-    },
-    load: function (src, fn) {
-      var script = document.createElement('script');
-      script.src = src;
-      script.addEventListener('load', fn);
-      return this;
-    }
-  };
-
-  require.config({
-    baseUrl: "/js/vendor"
-  });
-
-  window.createCanvas = function (id) {
-    if (window.canvas) { return window.canvas; }
-
-    var canvas = window.canvas = new Sandbox();
-    var socket = io.connect('http://localhost:8000');
-    var client = new Client(id, canvas, socket);
-
-    if (document.readyState === 'complete') {
-      client.initialize();
     } else {
-      document.addEventListener('DOMContentLoaded', client.initialize.bind(client));
+      injectScripts(iframe, src_list, callback);
     }
   };
+}
+
+function injectCSS(iframe, src, callback) {
+  // Inject code into the sandbox
+  var link = document.createElement('link');
+  link.href = src;
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  iframe[0].contentDocument.body.appendChild(link);
+  callback();
+}
+
+// Creates a sandbox iframe for a given script, injects everything and
+// returns the jQuery object representing it.
+window.setupSandboxIFrame = function (iframe, id, src) {
+    iframe[0].contentWindow.Broadcast = window.Broadcast;
+    injectCSS(iframe, "/css/screen.css", function () {
+      injectScripts(iframe, ["/socket.io/socket.io.js",
+                                     "/js/vendor/broadcast.js",
+                                     "/js/vendor/require.js",
+                                     "/js/module.js"],
+                    function () {
+                      iframe[0].contentWindow.createModule(id);
+                      injectScripts(iframe, [src + "?" + Math.random()]);
+                    });
+    });
+}
+  
 })();
