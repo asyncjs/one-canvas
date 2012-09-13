@@ -1,4 +1,4 @@
-var socket = io.connect();
+var socket = io.connect("http://canvas.browsing.co.uk");
 
 $(function () {
   var info = {

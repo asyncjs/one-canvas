@@ -7,12 +7,14 @@ var express = require('express')
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
       .default('port', 8000)
+      .default('listen', "0.0.0.0")
       .default('canvasroot', "canvases/")
       .argv
   , base = argv.canvasroot
   ;
 
-server.listen(argv.port);
+//176.58.108.74
+server.listen(argv.port, argv.listen);
 
 app.use(express.static('client/assets'));
 app.use(express.bodyParser());
@@ -84,7 +86,6 @@ app.post('/canvas/:id/save', function(req, res) {
   } else {
     fs.writeFile(fname + ".tmp", content, function (err) {
       if (err) throw err;
-      console.log("Saved ", fname);
       res.send(201, "Saved");
       if(req.body.publish) {
         fs.writeFile(fname, content, function (err) {});
@@ -127,11 +128,9 @@ var getUniqueCanvasId = function() {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.on('global', function(to, data) {
-    
-  });
+  socket.on('global', function(to, data) { });
   socket.on('paint', function (to, data) {
-    console.log("sending data to", to);
-    socket.emit(to, data);
+    io.sockets.emit(to, {topic: 'cursor', data: data});
   });
 });
+
