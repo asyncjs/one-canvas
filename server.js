@@ -118,6 +118,7 @@ io.sockets.on('connection', function (socket) {
     
   });
   socket.on('paint', function (to, data) {
+    console.log("sending data to", to);
     socket.emit(to, data);
   });
 });
