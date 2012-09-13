@@ -76,7 +76,7 @@ $(document).ready(function () {
   }
 
   function updateNextSandbox() {
-    var sandboxes = _.sortBy(window.sandboxes, function (sb) {return -sb.lastUpdated;})
+    var sandboxes = _.sortBy(window.sandboxes, function (sb) {return sb.lastUpdated;})
     updateSandbox(sandboxes[0]);
   }
   setInterval(updateNextSandbox, 30000);
