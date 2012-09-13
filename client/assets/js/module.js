@@ -48,15 +48,15 @@
     onSocketEvent: function (payload) {
       var _this = this;
       if(payload.topic == 'cursor') {
-        var count = 0;
-        payload.data.t.forEach(function(curpos) {
-          var cursor = _this.cursors[count];
-          if(!cursor) {
-            cursor = _this.cursors[count] = $('<div class="hidden cursor"/>')
-            $('body').append(cursor);
-          }
-          cursor.show().css({left: curpos.x - 25, top: curpos.y - 25});
-        });
+        //var count = 0;
+        //payload.data.t.forEach(function(curpos) {
+          //var cursor = _this.cursors[count];
+          //if(!cursor) {
+            //cursor = _this.cursors[count] = $('<div class="hidden cursor"/>')
+            //$('body').append(cursor);
+          //}
+          //cursor.show().css({left: curpos.x - 25, top: curpos.y - 25});
+        //});
       }
       this.module.events.emit('message', 
         {type: payload.topic, data: payload.data || {}});
