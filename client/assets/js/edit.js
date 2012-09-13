@@ -56,7 +56,7 @@ function reloadLiveView(script) {
     string.replace(/require\((.*?)\)/g, function (_, file) {
       requires.push(file);
     });
-    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+    string = 'require([' + requires.join(', ') + '], function () {\n' + string + '\n});';
 
     // Clear the iFrame and inject it with the 'string' which is the script.
     $('.editor-canvas iframe').contents().find('body').html('');
