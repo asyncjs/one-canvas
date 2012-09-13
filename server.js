@@ -12,7 +12,7 @@ var express = require('express')
   , base = argv.canvasroot
   ;
 
-server.listen(argv.port);
+server.listen(argv.port, "0.0.0.0");
 
 app.use(express.static('client/assets'));
 app.use(express.bodyParser());
