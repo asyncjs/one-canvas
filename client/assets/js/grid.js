@@ -4,7 +4,7 @@
  */
 var ROWS = 3,
     COLS = 3,
-    URL_HEIGHT = 50;
+    URL_HEIGHT = 20;
 $(document).ready(function () {
   var scripts = [];
   var width = parseInt($(window).width()/COLS,10), 
@@ -22,7 +22,7 @@ $(document).ready(function () {
         // set up div with url to mobile thingy
         sandbox.urlDisplay = $('<div class="url">');
         $('#grid').append(sandbox.urlDisplay);
-        sandbox.urlDisplay.css({position: "fixed", width: width, height: URL_HEIGHT, top: (r+1)*height-URL_HEIGHT, left: c*width});
+        sandbox.urlDisplay.css({"max-width": width, height: URL_HEIGHT, top: (r+1)*height-URL_HEIGHT, left: c*width});
         updateSandbox(sandbox);
       }
     }
@@ -64,7 +64,7 @@ $(document).ready(function () {
       sandbox.iframe = $('<iframe>');
       sandbox.iframe.css(
         {width: width,
-         height: height-URL_HEIGHT,
+         height: height,
          top: sandbox.row*height,
          left: sandbox.col*width});
       $('#grid').append(sandbox.iframe);

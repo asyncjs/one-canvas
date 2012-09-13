@@ -53,4 +53,6 @@ canvas { background-color: #000; overflow: hidden; }
     position: fixed;
     color: white;
     z-index: 200;
+    background: black;
+    opacity: 0.7;
 }
