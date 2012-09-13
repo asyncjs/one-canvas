@@ -13,6 +13,7 @@ var express = require('express')
   , base = argv.canvasroot
   ;
 
+//176.58.108.74
 server.listen(argv.port, argv.listen);
 
 app.use(express.static('client/assets'));
@@ -85,7 +86,6 @@ app.post('/canvas/:id/save', function(req, res) {
   } else {
     fs.writeFile(fname + ".tmp", content, function (err) {
       if (err) throw err;
-      console.log("Saved ", fname);
       res.send(201, "Saved");
       if(req.body.publish) {
         fs.writeFile(fname, content, function (err) {});
