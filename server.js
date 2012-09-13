@@ -26,11 +26,15 @@ app.get('/grid', function (req, res) {
   res.sendfile(__dirname + '/client/grid.html');
 });
 
-app.get('/get/:src', function (req, res) {
+app.get('/get/:src', function (req, res, next) {
   var src = req.params.src;
 
   // THIS IS NOT A GOOD IDEA KIDS!!!
   fs.readFile(__dirname + '/' + base + src, function (err, buffer) {
+    if( err || !buffer ) {
+      return next(err);
+    }
+
     var string = buffer.toString('utf-8');
     var requires = [];
 
@@ -68,7 +72,6 @@ app.post('/canvas/:id/save', function(req, res) {
   if(/[^A-Za-z0-9\-_]/.test(name)) {
     res.send(500, "invalid filename a-zA-Z0-9-_");
   } else {
-    va 
     fs.writeFile(fname + ".tmp", content, function (err) {
       if (err) throw err;
       console.log("Saved ", fname);

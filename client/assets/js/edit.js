@@ -12,6 +12,21 @@ $(document).ready(function() {
 
   var id = window.location.pathname.split('/')[2];
   var viewUrl = "/canvas/" + id + "/view";
+  var srcUrl = "/get/" + id + ".js.tmp";
+
+  jQuery.ajax({
+    url: srcUrl,
+    success: function(response) {
+      if(response) {
+        myCodeMirror.setValue(response);
+      }
+    },
+    error: function() {
+      jQuery.get('/get/default_example.js', function(response) {
+        myCodeMirror.setValue(response);
+      });
+    }
+  });
 
   // Load the current view in the right half.
   $("<iframe src='" + viewUrl + "' class='canvas-iframe' />").load(function() {
@@ -26,10 +41,7 @@ $(document).ready(function() {
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: $('.editor').val(), publish: true},
-      success: function(response) {
-        //$('.try-code').click();
-      }
+      data: {content: $('.editor').val(), publish: true}
     });
   });
 });
@@ -41,6 +53,14 @@ function reloadLiveView(script) {
 
     $('.editor-canvas iframe').contents().find('body').html('');
     $('.editor-canvas iframe')[0].contentWindow.eval(script);
+
+    // Also, save this.
+    var id = window.location.pathname.split('/')[2];
+    $.ajax({
+      url: '/canvas/' + id + '/save',
+      type: 'POST',
+      data: {content: $('.editor').val()}
+    });
   }
   catch (ex) {
   }
