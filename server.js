@@ -62,7 +62,8 @@ app.get('/canvas/:id/edit', function(req, res) {
 app.post('/canvas/:id/save', function(req, res) {
   var name    = req.params.id
      ,content = req.body.content
-     ,fname = base + name + ".js"
+     ,ext = "." + (req.body.type === "coffeescript" ? "coffee" : "js")
+     ,fname = base + name + ext
   ;
 
   if(/[^A-Za-z0-9\-_]/.test(name)) {
