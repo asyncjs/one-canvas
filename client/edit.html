@@ -21,37 +21,30 @@ src="/js/vendor/mode/javascript/javascript.js"></script>
   <link href="/css/theme/monokai.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <h1>Edit your art</h1>
-
   <div class="container">
-    <div class="halves">
+    <div class="halves first">
       <textarea class="editor" data-page="edit">
-canvas.ready(function () {
-  var canvas = document.createElement('canvas');
-  canvas.width = document.width;
-  canvas.height = document.height;
+var canvas = document.createElement('canvas');
+canvas.width = document.width;
+canvas.height = document.height;
 
-  var ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.fillStyle = 'red'
-  ctx.arc(canvas.width, canvas.height, canvas.height / 2, 0, Math.PI, true);
-  ctx.fill();
+var ctx = canvas.getContext('2d');
+ctx.beginPath();
+ctx.fillStyle = 'green'
+ctx.arc(canvas.width / 2, canvas.height / 2, canvas.height / 4, 0, Math.PI * 2, true);
+ctx.fill();
 
-  document.body.appendChild(canvas);
-});</textarea>
+document.body.appendChild(canvas);
+</textarea>
       <div class="editor-tools">
-        <button class="try-code">Try Code</button>
-        <button class="save-code">Save Code</button>
+        <button class="save-code">Publish Code</button>
       </div>
     </div>
-    <div class="halves">
+    <div class="halves second">
       <div class="canvas editor-canvas">
         <div class="cursor hidden"></div>
       </div>
     </div>
-    <br clear="all" />
   </div>
-  <div data-page="error">Disconnected</div>
-
 </body> 
 </html>

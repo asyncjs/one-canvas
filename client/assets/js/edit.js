@@ -1,17 +1,37 @@
 $(document).ready(function() {
+
   var myCodeMirror = CodeMirror.fromTextArea($('.editor')[0], {
     mode:  "javascript",
     theme: "monokai",
-    lineNumbers: true
+    lineNumbers: true,
+    onKeyEvent : function (editor, e) {
+      myCodeMirror.save();
+      reloadLiveView($('.editor').val());
+    }
   });
 
-  //TODO: fix this - this will break anytime soon!
   var id = window.location.pathname.split('/')[2];
   var viewUrl = "/canvas/" + id + "/view";
+  var srcUrl = "/get/" + id + ".js.tmp?clean=1";
+
+  jQuery.ajax({
+    url: srcUrl,
+    success: function(response) {
+      if(response) {
+        myCodeMirror.setValue(response);
+      }
+    },
+    error: function() {
+      jQuery.get('/get/default_example.js?clean=1', function(response) {
+        myCodeMirror.setValue(response);
+      });
+    }
+  });
 
   // Load the current view in the right half.
   $("<iframe src='" + viewUrl + "' class='canvas-iframe' />").load(function() {
-    // add something here if needed
+    myCodeMirror.save();
+    reloadLiveView($('.editor').val());
   }).appendTo('.editor-canvas');
 
   // Save the codes on the server.
@@ -21,21 +41,35 @@ $(document).ready(function() {
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: $('.editor').val()},
-      success: function(response) {
-        $('.try-code').click();
-        reloadLiveView();
-      }
+      data: {content: $('.editor').val(), publish: true}
     });
-  });
-
-  // Refresh the right half.
-  $('.try-code').click(function(event) {
-    reloadLiveView();
   });
 });
 
 
-function reloadLiveView() {
-  $('.canvas-iframe')[0].contentWindow.location.reload(true);
+function reloadLiveView(script) {
+  try {
+    // Get the script processed to use.
+    var string = script.toString('utf-8');
+    var requires = [];
+
+    string.replace(/require\((.*?)\)/g, function (_, file) {
+      requires.push(file);
+    });
+    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+
+    // Clear the iFrame and inject it with the 'string' which is the script.
+    $('.editor-canvas iframe').contents().find('body').html('');
+    $('.editor-canvas iframe')[0].contentWindow.eval(string);
+
+    // Also, save this script to the server
+    var id = window.location.pathname.split('/')[2];
+    $.ajax({
+      url: '/canvas/' + id + '/save',
+      type: 'POST',
+      data: {content: $('.editor').val()} //unmodified script
+    });
+  }
+  catch (ex) {
+  }
 }

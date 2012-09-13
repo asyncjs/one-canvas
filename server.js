@@ -12,7 +12,7 @@ var express = require('express')
   , base = argv.canvasroot
   ;
 
-server.listen(argv.port);
+server.listen(argv.port, "0.0.0.0");
 
 app.use(express.static('client/assets'));
 app.use(express.bodyParser());
@@ -26,11 +26,16 @@ app.get('/grid', function (req, res) {
   res.sendfile(__dirname + '/client/grid.html');
 });
 
-app.get('/get/:src', function (req, res) {
+app.get('/get/:src', function (req, res, next) {
   var src = req.params.src;
+  var clean = req.query['clean'];
 
   // THIS IS NOT A GOOD IDEA KIDS!!!
   fs.readFile(__dirname + '/' + base + src, function (err, buffer) {
+    if( err || !buffer ) {
+      return next(err);
+    }
+
     var string = buffer.toString('utf-8');
     var requires = [];
 
@@ -38,10 +43,19 @@ app.get('/get/:src', function (req, res) {
       requires.push(file);
     });
 
-    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+    // The editor does not need the require crap in.
+    if( !clean ) {
+      string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+    }
 
     res.send(string);
   });
+});
+
+app.get('/', function(req, res) {
+  // redirect the user to a random page.
+  var id = getUniqueCanvasId();
+  res.redirect('/canvas/' + id + '/edit');
 });
 
 app.get('/canvas', function(req, res) {
@@ -68,7 +82,6 @@ app.post('/canvas/:id/save', function(req, res) {
   if(/[^A-Za-z0-9\-_]/.test(name)) {
     res.send(500, "invalid filename a-zA-Z0-9-_");
   } else {
-    va 
     fs.writeFile(fname + ".tmp", content, function (err) {
       if (err) throw err;
       console.log("Saved ", fname);

@@ -3,7 +3,8 @@
  * sandboxed scripts.
  */
 var ROWS = 3,
-    COLS = 3;
+    COLS = 3,
+    URL_HEIGHT = 20;
 $(document).ready(function () {
   var scripts = [];
   var width = parseInt($(window).width()/COLS,10), 
@@ -18,6 +19,10 @@ $(document).ready(function () {
       for(var c = 0; c < COLS; c++) {
         var sandbox = {iframe: null, row: r, col: c, script: null};
         window.sandboxes.push(sandbox);
+        // set up div with url to mobile thingy
+        sandbox.urlDisplay = $('<div class="url">');
+        $('#grid').append(sandbox.urlDisplay);
+        sandbox.urlDisplay.css({"max-width": width, height: URL_HEIGHT, top: (r+1)*height-URL_HEIGHT, left: c*width});
         updateSandbox(sandbox);
       }
     }
@@ -50,7 +55,7 @@ $(document).ready(function () {
   function updateSandbox(sandbox) {
     getNextScript(function (script) {
       if (sandbox.iframe) {
-        try { sandbox.iframe.remove(); } catch (e) { }
+        sandbox.iframe.remove();
       }
       sandbox.script = script;
       var name = script.src.match(/\/get\/(.*)\.js/);
@@ -65,12 +70,14 @@ $(document).ready(function () {
       $('#grid').append(sandbox.iframe);
       sandbox.lastUpdated = (new Date()).getTime();
       setupSandboxIFrame(sandbox.iframe, sandbox.id, sandbox.script.src);
+
+      sandbox.urlDisplay.text("http://" + document.location.host + "/mobile/" + sandbox.id);
     });
   }
 
   function updateNextSandbox() {
     var sandboxes = _.sortBy(window.sandboxes, function (sb) {return -sb.lastUpdated;})
-    updateSandbox(sandboxes);
+    updateSandbox(sandboxes[0]);
   }
   setInterval(updateNextSandbox, 30000);
   
