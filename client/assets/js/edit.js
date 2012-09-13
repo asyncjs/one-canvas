@@ -59,10 +59,7 @@ function reloadLiveView(script) {
     string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
 
     // Clear the iFrame and inject it with the 'string' which is the script.
-    $script = $('.editor-canvas iframe').contents().find('#canvasScript');
-
     $('.editor-canvas iframe').contents().find('body').html('');
-
     $('.editor-canvas iframe')[0].contentWindow.eval(string);
 
     // Also, save this script to the server
