@@ -62,7 +62,10 @@ $(document).ready(function () {
       sandbox.script = script;
       sandbox.iframe = $('<iframe>');
       sandbox.iframe.css(
-        {width: width, height: height, top: sandbox.row*height, left: sandbox.col*width});
+        {width: width,
+         height: height,
+         top: sandbox.row*height,
+         left: sandbox.col*width});
       $('#grid').append(sandbox.iframe);
       sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.lastUpdated = (new Date()).getTime();
