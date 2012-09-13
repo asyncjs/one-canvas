@@ -7,12 +7,13 @@ var express = require('express')
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
       .default('port', 8000)
+      .default('listen', "0.0.0.0")
       .default('canvasroot', "canvases/")
       .argv
   , base = argv.canvasroot
   ;
 
-server.listen(argv.port, "0.0.0.0");
+server.listen(argv.port, argv.listen);
 
 app.use(express.static('client/assets'));
 app.use(express.bodyParser());
