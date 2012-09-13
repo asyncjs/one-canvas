@@ -86,6 +86,7 @@ canvas { background-color: #000; overflow: hidden; }
 iframe {
   border: 0;
   border-bottom: 1px solid #222;
+}
 
 .url {
     position: fixed;
