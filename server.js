@@ -50,9 +50,9 @@ app.get('/canvas', function(req, res) {
   res.redirect('/canvas/' + id + '/edit');
 });
 
-app.get('/canvas/:id/view', function(req, res) {
-  res.sendfile(__dirname + '/client/view.html');
-});
+//app.get('/canvas/:id/view', function(req, res) {
+  //res.sendfile(__dirname + '/client/view.html');
+//});
 
 app.get('/canvas/:id/edit', function(req, res) {
   res.sendfile(__dirname + '/client/edit.html');
@@ -114,11 +114,9 @@ var getUniqueCanvasId = function() {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.on('global', function(to, data) {
-    
-  });
+  socket.on('global', function(to, data) { });
   socket.on('paint', function (to, data) {
-    console.log("sending data to", to);
-    socket.emit(to, data);
+    io.sockets.emit(to, {topic: 'cursor', data: data});
   });
 });
+

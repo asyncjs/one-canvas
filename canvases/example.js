@@ -9,8 +9,7 @@ ctx.fillStyle = '#' + genCol() + genCol() + genCol();
 ctx.arc(canvas.width / 2, canvas.height / 2, canvas.height / 4, 0, Math.PI * 2, true);
 ctx.fill();
 
-module.send("test");
-module.message(function(msg) {
-  console.log("GOT MESSAGE", msg);
-});
+//module.message(function(msg) {
+  //window.top.console.log("GOT MESSAGE", msg);
+//});
 
