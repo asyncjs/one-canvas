@@ -18,10 +18,9 @@ app.use(express.static('client/assets'));
 app.use(express.bodyParser());
 
 app.get('/client/:id', function (req, res) {
-  //load the named file from dropbox
-  res.sendfile(__dirname + '/client/index.html');
+  //TODO: check the file exists
+  res.sendfile(__dirname + '/client/mobile.html');
 });
-
 
 app.get('/grid', function (req, res) {
   res.sendfile(__dirname + '/client/grid.html');
@@ -114,9 +113,11 @@ var getUniqueCanvasId = function() {
   }
 }
 
-
 io.sockets.on('connection', function (socket) {
-  socket.on('paint', function (data) {
-    console.log(data);
+  socket.on('global', function(to, data) {
+    
+  });
+  socket.on('paint', function (to, data) {
+    socket.emit(to, data);
   });
 });
