@@ -28,6 +28,7 @@ app.get('/grid', function (req, res) {
 
 app.get('/get/:src', function (req, res, next) {
   var src = req.params.src;
+  var clean = req.query['clean'];
 
   // THIS IS NOT A GOOD IDEA KIDS!!!
   fs.readFile(__dirname + '/' + base + src, function (err, buffer) {
@@ -42,7 +43,9 @@ app.get('/get/:src', function (req, res, next) {
       requires.push(file);
     });
 
-    string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+    if( clean ) {
+      string = 'require([' + requires.join(', ') + '], function (require) {\n' + string + '\n});';
+    }
 
     res.send(string);
   });

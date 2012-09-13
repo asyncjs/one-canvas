@@ -12,7 +12,7 @@ $(document).ready(function() {
 
   var id = window.location.pathname.split('/')[2];
   var viewUrl = "/canvas/" + id + "/view";
-  var srcUrl = "/get/" + id + ".js.tmp";
+  var srcUrl = "/get/" + id + ".js.tmp?clean=1";
 
   jQuery.ajax({
     url: srcUrl,
@@ -22,7 +22,7 @@ $(document).ready(function() {
       }
     },
     error: function() {
-      jQuery.get('/get/default_example.js', function(response) {
+      jQuery.get('/get/default_example.js?clean=1', function(response) {
         myCodeMirror.setValue(response);
       });
     }

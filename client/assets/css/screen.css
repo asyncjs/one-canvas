@@ -72,6 +72,8 @@ canvas { background-color: #000; overflow: hidden; }
 .CodeMirror,
 .CodeMirror-scroll {
   height: 100% !important;
+  font-size: 12px;
+  font-family: "Andale Mono", "Consolas", "Menlo", "Monaco", monospace;
 }
 
 .editor-tools {
