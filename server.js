@@ -17,7 +17,7 @@ server.listen(argv.port);
 app.use(express.static('client/assets'));
 app.use(express.bodyParser());
 
-app.get('/client/:id', function (req, res) {
+app.get('/mobile/:id', function (req, res) {
   //TODO: check the file exists
   res.sendfile(__dirname + '/client/mobile.html');
 });
@@ -121,6 +121,7 @@ io.sockets.on('connection', function (socket) {
     
   });
   socket.on('paint', function (to, data) {
+    console.log("sending data to", to);
     socket.emit(to, data);
   });
 });

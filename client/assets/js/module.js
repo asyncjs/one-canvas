@@ -20,6 +20,7 @@
     this.socket = socket;
 
     this.module.events.on('all', this.onModuleEvent, this);
+    console.log("listening on socket id ", id);
     this.socket.on(id, this.onSocketEvent.bind(this));
   }
 
@@ -36,6 +37,8 @@
       var canvas = document.createElement('canvas');
       canvas.width = document.width;
       canvas.height = document.height;
+      
+      document.body.appendChild(canvas);
       // So that the scripts can just access the canvas
       window.canvas = canvas;
     },
@@ -69,7 +72,7 @@
       return this;
     },
     send: function () {
-      this.events.emit.call(this.events, arguments);
+      this.events.emit.apply(this.events, arguments);
       return this;
     },
     load: function (src, fn) {

@@ -30,10 +30,10 @@ function injectCSS(iframe, src, callback) {
 window.setupSandboxIFrame = function (iframe, id, src) {
     iframe[0].contentWindow.Broadcast = window.Broadcast;
     injectCSS(iframe, "/css/screen.css", function () {
-      injectScripts(iframe, ["/socket.io/socket.io.js",
-                                     "/js/vendor/broadcast.js",
-                                     "/js/vendor/require.js",
-                                     "/js/module.js"],
+      injectScripts(iframe, [ "/socket.io/socket.io.js",
+                              "/js/vendor/broadcast.js",
+                              "/js/vendor/require.js",
+                              "/js/module.js"],
                     function () {
                       iframe[0].contentWindow.createModule(id);
                       injectScripts(iframe, [src + "?" + Math.random()]);
