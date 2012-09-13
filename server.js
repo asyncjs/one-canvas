@@ -61,17 +61,23 @@ app.get('/canvas/:id/edit', function(req, res) {
 });
 
 app.post('/canvas/:id/save', function(req, res) {
-  var name = req.params.id
+  var name    = req.params.id
      ,content = req.body.content
+     ,fname = base + name + ".js"
   ;
 
   if(/[^A-Za-z0-9\-_]/.test(name)) {
     res.send(500, "invalid filename a-zA-Z0-9-_");
   } else {
-    fs.writeFile(base + name + ".js", content, function (err) {
+    va 
+    fs.writeFile(fname + ".tmp", content, function (err) {
       if (err) throw err;
-      console.log("Saved ", name);
+      console.log("Saved ", fname);
       res.send(201, "Saved");
+      if(req.body.publish) {
+        fs.writeFile(fname, content, function (err) {});
+        console.log("Published", name);
+      }
     });
   }
 });
