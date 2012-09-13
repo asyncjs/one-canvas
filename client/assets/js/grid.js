@@ -53,7 +53,9 @@ $(document).ready(function () {
         try { sandbox.iframe.remove(); } catch (e) { }
       }
       sandbox.script = script;
-      sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
+      var name = script.src.match(/\/get\/(.*)\.js/);
+      sandbox.id = name[1]
+      //sandbox.id = "SANDBOX" + Math.random() + '_' + (new Date()).getTime();
       sandbox.iframe = $('<iframe>');
       sandbox.iframe.css(
         {width: width,
