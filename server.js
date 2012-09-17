@@ -6,7 +6,7 @@ var express = require('express')
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
   , argv = require('optimist')
-      .default('port', 8000)
+      .default('port', process.env.VMC_APP_PORT || 8000)
       .default('listen', "0.0.0.0")
       .default('canvasroot', "canvases/")
       .argv
