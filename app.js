@@ -56,8 +56,7 @@ app.get('/get/:src', function (req, res, next) {
 
 app.get('/', function(req, res) {
   // redirect the user to a random page.
-  var id = getUniqueCanvasId();
-  res.redirect('/canvas/' + id + '/edit');
+  res.redirect('/grid');
 });
 
 app.get('/canvas', function(req, res) {

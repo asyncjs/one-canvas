@@ -22,7 +22,7 @@ $(document).ready(function () {
         // set up div with url to mobile thingy
         sandbox.urlDisplay = $('<div class="url">');
         $('#grid').append(sandbox.urlDisplay);
-        sandbox.urlDisplay.css({"max-width": width, height: URL_HEIGHT, top: (r+1)*height-URL_HEIGHT, left: c*width});
+        sandbox.urlDisplay.css({"max-width": width, height: URL_HEIGHT, top: (r+1)*height-URL_HEIGHT, left: (c*width)+10});
         updateSandbox(sandbox);
       }
     }
@@ -81,4 +81,11 @@ $(document).ready(function () {
   }
   setInterval(updateNextSandbox, 30000);
   
+  $("#add a").click(function() {
+    var nick = window.prompt("Enter a canvas name");
+    if(nick) {
+      window.location = "/canvas/" + nick + "/edit";
+    }
+    
+  });
 });
