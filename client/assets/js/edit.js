@@ -13,6 +13,7 @@ $(document).ready(function() {
   var id = window.location.pathname.split('/')[2];
   var viewUrl = "/canvas/" + id + "/view";
   var srcUrl = "/get/" + id + ".js.tmp?clean=1";
+  var saved = jQuery('.saved');
 
   jQuery.ajax({
     url: srcUrl,
@@ -36,12 +37,19 @@ $(document).ready(function() {
 
   // Save the codes on the server.
   $('.save-code').click(function(event) {
+    saved.addClass('hide');
 
     myCodeMirror.save();
     $.ajax({
       url: '/canvas/' + id + '/save',
       type: 'POST',
-      data: {content: $('.editor').val(), publish: true}
+      data: {content: $('.editor').val(), publish: true},
+      success: function () {
+        saved.removeClass('hide');
+        setTimeout(function () {
+          saved.addClass('hide');
+        }, 1000);
+      }
     });
   });
 });
