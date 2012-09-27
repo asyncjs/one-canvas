@@ -1,7 +1,7 @@
 html, body, div { margin: 0; border: 0 none; padding: 0; }
 html, body { height: 100%; min-height: 100%; }
 body {
-  background-color: #000;
+  background-color: #1A1A1A;
   font-family: sans-serif;
 }
 
@@ -88,15 +88,34 @@ canvas { background-color: #000; overflow: hidden; }
 .CodeMirror,
 .CodeMirror-scroll {
   height: 100% !important;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.2em;
   font-family: "Andale Mono", "Consolas", "Menlo", "Monaco", monospace;
 }
 
 .editor-tools {
   position: absolute;
+  left: 0;
+  right: -100%;
   bottom: 0;
-  right: 0;
+  padding: 5px 5px;
+  background: -webkit-linear-gradient(#333, #212121);
+  border-bottom: 1px solid #1A1A1A;
+  left: 0;
+  z-index: 1000;
+  text-align: right;
+}
+
+.editor-tools button {
+  border: 1px solid #1A1A1A;
+  background: -webkit-linear-gradient(#333, #212121);
+  color: #EFEFEF;
+  text-shadow: 0 -1px 0 black;
+  font-size: 12px;
+  padding: 5px 15px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: pointer;
 }
 
 iframe {
