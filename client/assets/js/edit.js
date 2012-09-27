@@ -55,6 +55,7 @@ $(document).ready(function() {
 });
 
 
+var pending = false;
 function reloadLiveView(script) {
   try {
     // Get the script processed to use.
