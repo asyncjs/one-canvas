@@ -72,11 +72,16 @@ function reloadLiveView(script) {
 
     // Also, save this script to the server
     var id = window.location.pathname.split('/')[2];
-    $.ajax({
-      url: '/canvas/' + id + '/save',
-      type: 'POST',
-      data: {content: $('.editor').val()} //unmodified script
-    });
+    if(!pending) {
+      pending = true;
+      $.ajax({
+        url: '/canvas/' + id + '/save',
+        type: 'POST',
+        data: {content: $('.editor').val()} //unmodified script
+      }).complete(function() {
+        pending = false;
+      });
+    }
   }
   catch (ex) {
   }
